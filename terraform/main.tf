@@ -90,6 +90,14 @@ resource "aws_security_group" "devops_sg" {
     cidr_blocks = ["213.8.160.118/32"]
   }
 
+  ingress {
+  description = "Flask API"
+  from_port   = 5000
+  to_port     = 5000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
   egress {
     description = "Allow all outbound"
     from_port   = 0
