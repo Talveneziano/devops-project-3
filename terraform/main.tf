@@ -77,7 +77,7 @@ resource "aws_key_pair" "devops_key" {
 
 resource "aws_security_group" "devops_sg" {
   name        = "devops-project-3-sg"
-  description = "Allow SSH and HTTP"
+  description = "Allow SSH"
   vpc_id      = aws_vpc.main.id
 
   ingress {
