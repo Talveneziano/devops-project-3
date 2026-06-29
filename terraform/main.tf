@@ -61,6 +61,8 @@ resource "aws_instance" "devops_project_3" {
   key_name               = aws_key_pair.devops_key.key_name
   vpc_security_group_ids = [aws_security_group.devops_sg.id]
 
+  user_data = file("${path.module}/user_data.sh")
+
   tags = {
     Name = "devops-project-3"
   }
