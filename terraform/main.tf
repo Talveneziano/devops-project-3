@@ -58,8 +58,53 @@ resource "aws_instance" "devops_project_3" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   subnet_id     = aws_subnet.public.id
+  key_name               = aws_key_pair.devops_key.key_name
+  vpc_security_group_ids = [aws_security_group.devops_sg.id]
 
   tags = {
     Name = "devops-project-3"
+  }
+}
+
+resource "aws_key_pair" "devops_key" {
+  key_name   = "devops-project-3-key"
+  public_key = file(pathexpand(var.public_key_path))
+
+  tags = {
+    Name = "devops-project-3-key"
+  }
+}
+
+resource "aws_security_group" "devops_sg" {
+  name        = "devops-project-3-sg"
+  description = "Allow SSH and HTTP"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["213.8.160.118/32"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow all outbound"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "devops-project-3-sg"
   }
 }
